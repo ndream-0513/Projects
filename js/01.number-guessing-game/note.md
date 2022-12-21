@@ -53,3 +53,10 @@ for (const fruit of fruits) {
 - 引用`input`标签的对象，有`foucus()`方法（特有的），值的属性为`value`，还有`disabled`属性`true`为禁止输入，`false`为可以输入
 - 引用`p`标签的对象，值的属性为`textContent`
 - 所有的引用标签的对象都有`style`属性，可以使用`javascript`来动态的设置`css`样式
+
+
+
+### 常见错误
+
+- ```“TypeError：guessSubmit.addeventListener is not a function”```：`addeventListener`应该要写为`addEventListener`，`e`要大写
+- ```“TypeError：lowOrHi is null”```：选择器没有找到引用
