@@ -60,3 +60,13 @@ for (const fruit of fruits) {
 
 - ```“TypeError：guessSubmit.addeventListener is not a function”```：`addeventListener`应该要写为`addEventListener`，`e`要大写
 - ```“TypeError：lowOrHi is null”```：选择器没有找到引用
+
+
+
+### 变量
+
+`let`、`var`：`var`可以重新定义相同的变量名，`let`不可以，这是`let`的一个优点
+
+变量类型包括：`number`、`string`、`boolean`、`array`、`object`（`array`声明使用`[ ]`，`object`声明使用`{ key : value, }`）
+
+`JS`是一种”动态类型语言“，他根据当前值的内容来决定变量是什么类型，不需要给它指定类型，只需要使用`let`或`var`声明
