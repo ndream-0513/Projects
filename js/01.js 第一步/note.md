@@ -70,3 +70,34 @@ for (const fruit of fruits) {
 变量类型包括：`number`、`string`、`boolean`、`array`、`object`（`array`声明使用`[ ]`，`object`声明使用`{ key : value, }`）
 
 `JS`是一种”动态类型语言“，他根据当前值的内容来决定变量是什么类型，不需要给它指定类型，只需要使用`let`或`var`声明
+
+
+
+### 字符串
+
+字符串后面可以直接加数字，`javascript`会看做是两个字符串进行相加
+
+每一个数字都有`toString()`方法，用来转化为字符串
+
+字符串转数字可以用`Number(stringName)`来实现
+
+`javascript`中可使用`typeof(varName)`来判断当前变量的类型
+
+常用方法：
+
+- `string.length`属性：返回字符串长度
+- `string.indexOf(para)`：在字符串中查找子字符串，没有则返回-1
+- `string.slice(begin, end)`：字符串切片
+- `string.toLowerCase()`、`string.toUpperCase()`：大小写转换
+- `string.replace(old, new)`：替换字符串的某部分
+
+### 数组
+
+常用方法：
+
+- `string.split(',')`：将字符串转换为数组，每一项以`,`分隔
+- `array.join(',')`：将数组转换为字符串，每一项以`,`连接
+- `array.toString()`：将数组转换为字符串，只能以`,`连接
+- `array.push('element1', 'element2', ……)`：在数组末尾加入一个或多个元素
+- `array.pop()`：删除数组中的最后一个元素
+- `unshift()`和`shift()`从功能上与`push()`和`pop()`完全相同，只是它们分别作用于数组的开始，而不是结尾。
