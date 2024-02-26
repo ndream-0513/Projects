@@ -10,6 +10,8 @@ class LogApp(models.Model):
     class Meta:
         managed = False
         db_table = 'log_app'
+        verbose_name = '应用日志'
+        verbose_name_plural = '应用日志'
 
 
 class LogDns(models.Model):
@@ -22,6 +24,8 @@ class LogDns(models.Model):
     class Meta:
         managed = False
         db_table = 'log_dns'
+        verbose_name = 'DNS日志'
+        verbose_name_plural = 'DNS日志'
 
 
 class LogNetflow(models.Model):
@@ -40,3 +44,5 @@ class LogNetflow(models.Model):
     class Meta:
         managed = False
         db_table = 'log_netflow'
+        verbose_name = 'TCP/UDP日志'
+        verbose_name_plural = 'TCP/UDP日志'
