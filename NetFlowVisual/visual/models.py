@@ -1,4 +1,6 @@
 from django.db import models
+import datetime
+import time
 
 class LogApp(models.Model):
     client_mac = models.CharField(max_length=17, blank=True, null=True)
@@ -6,6 +8,12 @@ class LogApp(models.Model):
     start_time = models.BigIntegerField(blank=True, null=True)
     end_time = models.BigIntegerField(blank=True, null=True)
     host = models.CharField(max_length=64, blank=True, null=True)
+
+    def readable_start_time(self):
+        return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(self.start_time))
+
+    def readable_end_time(self):
+        return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(self.end_time))
 
     class Meta:
         managed = False
@@ -20,6 +28,9 @@ class LogDns(models.Model):
     domain = models.CharField(max_length=255, blank=True, null=True)
     rdata = models.CharField(max_length=255, blank=True, null=True)
     time = models.BigIntegerField(blank=True, null=True)
+
+    def readable_time(self):
+        return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(self.time))
 
     class Meta:
         managed = False
@@ -40,6 +51,12 @@ class LogNetflow(models.Model):
     pkt_list = models.TextField(blank=True, null=True)
     type = models.IntegerField(blank=True, null=True)
     host = models.CharField(max_length=255, blank=True, null=True)
+
+    def readable_time_start(self):
+        return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(self.time_start))
+
+    def readable_time_end(self):
+        return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(self.time_end))
 
     class Meta:
         managed = False

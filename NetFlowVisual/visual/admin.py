@@ -6,35 +6,54 @@ from .models import LogApp
 
 class LogAppAdmin(admin.ModelAdmin):
     # Custom admin list view
-    list_display = ('client_mac', 'app_name', 'start_time', 'end_time', 'host', )
-    # list_display_links = ('title', ) # default
-    # sortable_by # a sub set of list_display. All fields are sortable by default.
+    list_display = ('client_mac', 'app_name', 'readable_start_time', 'readable_end_time', 'host', )
+
+    search_fields = ('client_mac', 'app_name', 'host', )
+
+    readonly_fields = ('start_time', 'end_time', )
 
     '''10 items per page'''
-    list_per_page = 5
+    list_per_page = 10
 
     '''Max 200 when clicking show all'''
     list_max_show_all = 200 #default
 
-    '''Calling select related objects to reduce SQL queries'''
-    #list_select_related = ('client_mac', )
+    '''Replacement value for empty field'''
+    empty_value_display = 'NA'
 
-    '''Render a search box at top. ^, =, @, None=icontains'''
-    #search_fields = ['client_mac']
+class LogDnsAdmin(admin.ModelAdmin):
+    # Custom admin list view
+    list_display = ('type', 'client_mac', 'domain', 'rdata', 'readable_time', )
 
-    '''Render date options at top. do not accept tuple'''
-    #date_hierarchy = 'create_date'
+    search_fields = ('type', 'client_mac', 'domain', 'rdata', )
+
+    '''10 items per page'''
+    list_per_page = 10
+
+    '''Max 200 when clicking show all'''
+    list_max_show_all = 200 #default
 
     '''Replacement value for empty field'''
     empty_value_display = 'NA'
 
-    '''filter options'''
-    #list_filter = ('status', 'author__is_superuser', )
+class LogNetflowAdmin(admin.ModelAdmin):
+    # Custom admin list view
+    list_display = ('client_mac', 'ip_src', 'ip_dst', 'port_src', 'port_dst', 'readable_time_start', 'readable_time_end', 'len', 'type', 'host', )
+
+    search_fields = ('client_mac', 'ip_src', 'ip_dst', 'port_src', 'port_dst', 'len', 'type', 'host', )
+
+    '''10 items per page'''
+    list_per_page = 10
+
+    '''Max 200 when clicking show all'''
+    list_max_show_all = 200 #default
+
+    '''Replacement value for empty field'''
+    empty_value_display = 'NA'
 
 admin.site.register(LogApp, LogAppAdmin)
-
-admin.site.register(LogDns)
-admin.site.register(LogNetflow)
+admin.site.register(LogDns, LogDnsAdmin)
+admin.site.register(LogNetflow, LogNetflowAdmin)
 
 admin.site.site_header = '网络流量分析'
 admin.site.site_title = '管理'
