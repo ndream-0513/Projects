@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group, User
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
 
 from visual.models import LogApp, LogDns, LogNetflow
 
@@ -50,6 +52,24 @@ class LogNetflowAdmin(admin.ModelAdmin):
 
     '''Replacement value for empty field'''
     empty_value_display = 'NA'
+
+# 定制User
+class MyUserAdmin(UserAdmin):
+    def has_module_permission(self, request):
+    # 返回False将在admin中隐藏User模块
+        return False
+
+# 定制Group
+class MyGroupAdmin(GroupAdmin):
+    def has_module_permission(self, request):
+    # 返回False将在admin中隐藏Group模块
+        return False
+
+# 重新注册User和Group模型以使用上面的定制类
+admin.site.unregister(User)
+admin.site.register(User, MyUserAdmin)
+admin.site.unregister(Group)
+admin.site.register(Group, MyGroupAdmin)
 
 admin.site.register(LogApp, LogAppAdmin)
 admin.site.register(LogDns, LogDnsAdmin)
