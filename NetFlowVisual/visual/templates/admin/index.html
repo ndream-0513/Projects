@@ -25,49 +25,65 @@
             integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
             crossorigin="anonymous">
         </script>
+
+        <select id="aggregateBySelect">
+            <option value="minute">Minute</option>
+            <option value="hour">Hour</option>
+<!--           <option value="day">Day</option>
+-->        </select>
+
         <div style="width: 150%; margin: auto;">
-            <canvas id="packetChart"></canvas>
+            <canvas id="packetsChart"></canvas>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            var ctx = document.getElementById('packetChart').getContext('2d');
-var packetChart = new Chart(ctx, {
+            var ctx = document.getElementById('packetsChart').getContext('2d');
+var chart = new Chart(ctx, {
     type: 'line',
     data: {
         labels: [],
         datasets: [{
-            label: 'Packets per Minute',
+            label: 'Number of TCP/UDP Packets',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
             data: [],
-            borderWidth: 1,
-            tension: 0.6,
-            fill: true,
+            tension: 0.6
         }]
     },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
+    options: {}
 });
 
-function fetchPacketData() {
-    fetch('/packet-data/')
+function updateChart(aggregateBy) {
+    fetch(`/packets-data/?aggregate_by=${aggregateBy}`)
         .then(response => response.json())
         .then(data => {
-            packetChart.data.labels = data.labels;
-            packetChart.data.datasets[0].data = data.data;
-            packetChart.update();
+            chart.data.labels = data.labels;
+            chart.data.datasets[0].data = data.data;
+            chart.update();
         });
 }
 
-// 每隔10秒获取一次数据
-setInterval(fetchPacketData, 10000);
+// 监听下拉菜单的变化
+document.getElementById('aggregateBySelect').addEventListener('change', function() {
+    clearInterval(refreshInterval);  // 清除现有的间隔
+    updateChart(this.value);  // 更新图表
+    startAutoRefresh(this.value);  // 重新开始自动刷新
+});
 
-// 初始加载
-fetchPacketData();
+// 开始自动刷新
+function startAutoRefresh(aggregateBy) {
+    refreshInterval = setInterval(() => {
+        updateChart(aggregateBy);
+    }, 30000); // 每5秒刷新一次，时间间隔可根据需要调整
+}
+
+var aggregateBySelect = document.getElementById('aggregateBySelect');
+var refreshInterval; // 用于存储setInterval的引用
+updateChart(aggregateBySelect.value); // 初始加载图表
+startAutoRefresh(aggregateBySelect.value); // 开始自动刷新
         </script>
+
     </div>
 </div>
-{% endblock %}
+        {% endblock %}
