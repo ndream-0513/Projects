@@ -1,0 +1,73 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+{% block bodyclass %}{{ block.super }} app-{{ app_label }}{% endblock %}
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+    &rsaquo;
+    {% for app in app_list %}
+    {{ app.name }}
+    {% endfor %}
+</div>
+{% endblock %}
+{% endif %}
+{% block content %}
+<div style="float: left">
+    <div id="content-main">
+        {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+    </div>
+    <div id="content-statistics">
+        <h1>Statistics</h1>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+            crossorigin="anonymous">
+        </script>
+        <div style="width: 150%; margin: auto;">
+            <canvas id="packetChart"></canvas>
+        </div>
+
+        <script>
+            var ctx = document.getElementById('packetChart').getContext('2d');
+var packetChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Packets per Minute',
+            data: [],
+            borderWidth: 1,
+            tension: 0.6,
+            fill: true,
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+function fetchPacketData() {
+    fetch('/packet-data/')
+        .then(response => response.json())
+        .then(data => {
+            packetChart.data.labels = data.labels;
+            packetChart.data.datasets[0].data = data.data;
+            packetChart.update();
+        });
+}
+
+// 每隔10秒获取一次数据
+setInterval(fetchPacketData, 10000);
+
+// 初始加载
+fetchPacketData();
+        </script>
+    </div>
+</div>
+{% endblock %}

@@ -52,6 +52,9 @@ class LogNetflow(models.Model):
     type = models.IntegerField(blank=True, null=True)
     host = models.CharField(max_length=255, blank=True, null=True)
 
+    def group_time_start(self):
+        return time.strftime("%Y-%m-%d %H:%M", time.localtime(self.time_start))
+
     def readable_time_start(self):
         return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(self.time_start))
 

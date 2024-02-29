@@ -4,8 +4,6 @@ from django.contrib.auth.admin import UserAdmin, GroupAdmin
 
 from visual.models import LogApp, LogDns, LogNetflow
 
-from .models import LogApp
-
 class LogAppAdmin(admin.ModelAdmin):
     # Custom admin list view
     list_display = ('client_mac', 'app_name', 'readable_start_time', 'readable_end_time', 'host', )
